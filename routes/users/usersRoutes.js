@@ -27,7 +27,6 @@ router.post('/register', userValidation, register);
 // const isAuth = (req, res, next) => {};
 
 router.get('/register', (req, res) => {
-  console.log('login', req.session);
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
@@ -54,17 +53,15 @@ router.get('/register', (req, res) => {
 // });
 
 router.get('/login', (req, res) => {
-  console.log('login', req.session);
   if (req.isAuthenticated()) {
     return res.render('main/home');
   }
-  console.log('login');
   return res.render('auth/login', { errors: req.flash('errors') });
 });
 
 router.post(
-  '/local- login',
-  passport.authenticate('local', {
+  '/login',
+  passport.authenticate('local-login', {
     successRedirect: 'main/home',
     failureRedirect: 'api/users/login',
     failureFlash: true
@@ -72,7 +69,7 @@ router.post(
 );
 
 router.get('/profile', (req, res, next) => {
-  console.log(req.user);
+
   if (req.isAuthenticated()) {
     return res.render('auth/profile');
   }
@@ -123,6 +120,6 @@ router.put('/update-password', (req, res, next) => {
       console.log(err);
       req.flash('perrors', 'Unable to Update user');
       return res.redirect('/api/users/update-profile');
-    });
+    }).catch((err)=>next(err))
 });
 module.exports = router;

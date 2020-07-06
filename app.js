@@ -18,7 +18,7 @@ const usersRouter = require('./routes/users/usersRoutes');
 const app = express();
 
 mongoose
-  .connect(proces.env.MONGODB_URI, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
@@ -53,10 +53,9 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
+app.use(function(req, res, next) {
   res.locals.user = req.user;
-  res.locals.errors = req.flash('errors');
-  res.locals.perrors = req.flash('perrors');
+  res.locals.errors = req.flash
   next();
 });
 
